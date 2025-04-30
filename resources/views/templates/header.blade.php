@@ -216,6 +216,7 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
+                    <li><a href="{{ asset('/')}}"><i class="fa fa-book"></i> <span>Data Kategori</span></a></li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-th"></i> <span>Kategori</span>
@@ -379,7 +380,6 @@
                             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{ asset('assets')}}/documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
                     <li class="header">LABELS</li>
                     <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
                     <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
