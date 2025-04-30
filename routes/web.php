@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\kategoriController;
 use App\Http\Controllers\produkController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', [HomeController::class, 'index']);
+Route::get('/produk', [produkController::class, 'index']);
+Route::get('produk/add', [produkController::class, 'create']);
+Route::post('produk/add', [produkController::class, 'store']);
+
 
 Route::get('/', [kategoriController::class, 'index']);
 Route::get('kategori/add', [kategoriController::class, 'create']);

@@ -27,8 +27,9 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Produk</th>
+                        <th>Stock</th>
                         <th>Harga</th>
-                        <!-- <th>Stock</th> -->
+                        <th>Kategori</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -38,8 +39,9 @@
                     <tr>
                         <td>{{ !empty($i) ? ++$i : $i = 1 }}</td>
                         <td>{{ $row->nama_produk }}</td>
+                        <td>{{ $row->stok }}</td>
+                        <td>{{ $row->kategori->nama_kategori }}</td>
                         <td>{{ $row->harga }}</td>
-                        <!-- <td>{{ $row->harga }}</td> -->
                         <td>
                             <a href="{{ url("produk/$row->id_produk/edit") }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></a>
                             <form action="{{ url("produk/$row->id_produk/delete") }}" method="POST" style="display:inline;">

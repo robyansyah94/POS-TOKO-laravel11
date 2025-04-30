@@ -205,6 +205,15 @@
 </div>
 <!-- ./wrapper -->
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 1500);//1500 = 2 detik
+    });
+</script>
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('assets')}}/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -217,15 +226,6 @@
 <script src="{{ asset('assets')}}/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('assets')}}/dist/js/demo.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 1500);//1500 = 2 detik
-    });
-</script>
 
 </body>
 </html>

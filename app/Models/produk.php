@@ -11,6 +11,11 @@ class produk extends Model
     protected $table = 't_produk';
 
     protected $fillable = [
-        'nama_produk', 'harga' , 'stok'
+        'nama_produk', 'stok', 'harga', 'id_kategori'
     ];
+
+    public function kategori()
+    {
+        return $this->hasOne('\App\Models\kategori', 'id_kategori', 'id_kategori');
+    }
 }

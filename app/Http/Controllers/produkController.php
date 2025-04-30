@@ -20,41 +20,39 @@ class produkController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|unique:t_produk',
-            'nama_lengkap' => 'required|max:100',
-            'jenis_kelamin' => 'required',
-            'alamat' => 'required',
-            'no_telp' => 'required',
-            'id_kelas' => 'required|exists:t_kelas',
+            'nama_produk' => 'required|max:100',
+            'stok' => 'required|max:100',
+            'harga' => 'required|max:100',
+            'id_kategori' => 'required|exists:t_kategori',
         ]);
 
         $input = $request->all();
         $status = \App\Models\produk::create($input);
 
-        if ($status) return redirect('/')->with('success', 'Data Berhasil ditambahkan');
-        else return redirect('produk')->with('error', 'Data Gagal ditambahkan');
+        if ($status) return redirect('/produk')->with('success', 'Data Berhasil ditambahkan');
+        else return redirect('produk/add')->with('error', 'Data Gagal ditambahkan');
     }
 
     public function edit($id)
     {
         $data['result'] = \App\Models\produk::where('nis', $id)->first();
-        return view('siswa/form')->with($data);
+        return view('produk/form')->with($data);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'id_produk' => 'rrequired|max:100',
             'nama_produk' => 'required|max:100',
-            'stok' => 'required',
-            'harga' => 'required',
+            'stok' => 'required|max:100',
+            'harga' => 'required|max:100',
+            'id_kategori' => 'required|exists:t_kategori',
         ]);
 
         $input = $request->all();
         $result = \App\Models\produk::where('id_produk', $id)->first();
         $status = $result->update($input);
 
-        if ($status) return redirect('/')->with('success', 'Data Berhasil ditambahkan');
-        else return redirect('produk')->with('error', 'Data Gagal ditambahkan');
+        if ($status) return redirect('/produk')->with('success', 'Data Berhasil ditambahkan');
+        else return redirect('produk/add')->with('error', 'Data Gagal ditambahkan');
     }
 }

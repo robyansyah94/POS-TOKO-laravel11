@@ -14,24 +14,11 @@ class ProdukSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'nama_kategori'=>'Sanack',
-            'deskripsi'=>'Makanan ringan atau cemilan'
+            'nama_produk'=>'Ciki',
+            'stok'=>'4',
+            'harga'=>'6500.00',
         ];
 
-        DB::table('t_kategori')->insert($data);
-
-        $data = [
-            'nama_kategori'=>'Alat Mandi',
-            'deskripsi'=>'Peralatan yang digunakan untuk mandi'
-        ];
-
-        DB::table('t_kategori')->insert($data);
-
-        $data = [
-            'nama_kategori'=>'Makanan Berat',
-            'deskripsi'=>'jenis makanan yang mengandung energi tinggi dan sebagai hidangan utama'
-        ];
-
-        DB::table('t_kategori')->insert($data);
+        DB::table('t_produk')->insert($data);
     }
 }
