@@ -15,11 +15,11 @@
 
 <!-- Main content -->
 <section class="content">
-
+    @include('templates/feedback')
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <a href="{{ url('produk/add') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
+            <a href="{{ url('kategori/add') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
         </div>
         <div class="box-body">
             <table class="table table-stripped">

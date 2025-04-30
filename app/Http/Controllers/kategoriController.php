@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategori;
 use Illuminate\Http\Request;
 
 class kategoriController extends Controller
@@ -15,20 +16,24 @@ class kategoriController extends Controller
         return view('kategori/index')->with($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('kategori/form');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required|max:100',
+            'deskripsi'    => 'required|max:100'
+        ]);
+
+        $input = $request->all();
+        $status= \App\Models\kategori::create($input);
+
+        if ($status) return redirect('/')->with('success','Data Berhasil ditambahkan');
+        else return redirect('kategori')->with('error','Data Gagal ditambahkan');
     }
 
     /**
@@ -39,27 +44,33 @@ class kategoriController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $data['result'] = \App\Models\kategori::where('id_kategori', $id)->first();
+        return view('kategori/form')->with($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required|max:100',
+            'deskripsi'    => 'required|max:100',
+        ]);
+
+        $input = $request->all();
+        $result = \App\Models\kategori::where('id_kategori', $id)->first();
+        $status= $result->update($input);
+
+        if ($status) return redirect('/')->with('success','Data Berhasil diubah');
+        else return redirect('/')->with('error','Data Gagal diubah');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
+        $result = \App\Models\kategori::where('id_kategori', $id)->first();
+        $status = $result->delete();
+
+        if ($status) return redirect('/')->with('success','Data Berhasil dihapus');
+        else return redirect('/')->with('error','Data Gagal dihapus');
+    }  
 }
