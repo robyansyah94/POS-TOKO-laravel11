@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/produk', [produkController::class, 'index']);
 Route::get('produk/add', [produkController::class, 'create']);
 Route::post('produk/add', [produkController::class, 'store']);
+Route::get('produk/{id}/edit', [produkController::class, 'edit']);
+Route::patch('produk/{id}/edit', [produkController::class, 'update']);
+Route::delete('produk/{id}/delete', [produkController::class, 'destroy']);
 
 
 Route::get('/', [kategoriController::class, 'index']);

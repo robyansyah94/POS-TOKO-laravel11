@@ -35,7 +35,7 @@ class produkController extends Controller
 
     public function edit($id)
     {
-        $data['result'] = \App\Models\produk::where('nis', $id)->first();
+        $data['result'] = \App\Models\produk::where('id_produk', $id)->first();
         return view('produk/form')->with($data);
     }
 
@@ -55,4 +55,13 @@ class produkController extends Controller
         if ($status) return redirect('/produk')->with('success', 'Data Berhasil ditambahkan');
         else return redirect('produk/add')->with('error', 'Data Gagal ditambahkan');
     }
+
+    public function destroy(Request $request, $id)
+    {
+        $result = \App\Models\produk::where('id_produk', $id)->first();
+        $status = $result->delete();
+
+        if ($status) return redirect('/produk')->with('success','Data Berhasil dihapus');
+        else return redirect('produk/add')->with('error','Data Gagal dihapus');
+    } 
 }
