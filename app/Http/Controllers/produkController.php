@@ -24,9 +24,17 @@ class produkController extends Controller
             'stok' => 'required|max:100',
             'harga' => 'required|max:100',
             'id_kategori' => 'required|exists:t_kategori',
+            'foto' => 'required|mimes:jpeg,png|max:512',
         ]);
 
         $input = $request->all();
+
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $filename = $input['nama_produk'] . "." . $request->file('foto')->getClientOriginalExtension();
+            $request->file('foto')->storeAs('', $filename);
+            $input['foto'] = $filename;
+        }
+
         $status = \App\Models\produk::create($input);
 
         if ($status) return redirect('/produk')->with('success', 'Data Berhasil ditambahkan');
@@ -50,6 +58,13 @@ class produkController extends Controller
 
         $input = $request->all();
         $result = \App\Models\produk::where('id_produk', $id)->first();
+
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $filename = $input['nama_produk'] . "." . $request->file('foto')->getClientOriginalExtension();
+            $request->file('foto')->storeAs('', $filename);
+            $input['foto'] = $filename;
+        }
+
         $status = $result->update($input);
 
         if ($status) return redirect('/produk')->with('success', 'Data Berhasil ditambahkan');
@@ -61,7 +76,7 @@ class produkController extends Controller
         $result = \App\Models\produk::where('id_produk', $id)->first();
         $status = $result->delete();
 
-        if ($status) return redirect('/produk')->with('success','Data Berhasil dihapus');
-        else return redirect('produk/add')->with('error','Data Gagal dihapus');
-    } 
+        if ($status) return redirect('/produk')->with('success', 'Data Berhasil dihapus');
+        else return redirect('produk/add')->with('error', 'Data Gagal dihapus');
+    }
 }

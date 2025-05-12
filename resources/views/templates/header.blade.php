@@ -37,7 +37,7 @@
             <!-- Logo -->
             <a href="{{ asset('assets')}}/index2.html" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>A</b>LT</span>
+                <span class="logo-mini"><b>M</b>By</span>
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><b>Market</b>By</span>
             </a>
@@ -218,7 +218,8 @@
                     <li class="header">MAIN NAVIGATION</li>
                     <li><a href="{{ asset('/')}}"><i class="fa fa-book"></i> <span>Data Kategori</span></a></li>
                     <li><a href="{{ asset('/produk')}}"><i class="fa fa-shopping-cart"></i> <span>Data Produk</span></a></li>
-                    <li class="treeview">
+                    <li><a href="{{ asset('/kasir')}}"><i class="fa fa-shopping-cart"></i> <span>Produk</span></a></li>
+                    <!-- <li class="treeview">
                         <a href="#">
                             <i class="fa fa-th"></i> <span>Kategori</span>
                             <span class="pull-right-container">
@@ -226,10 +227,13 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ asset('assets')}}/index.html">Makanan</a></li>
-                            <li><a href="{{ asset('assets')}}/index2.html">Minuman</a></li>
+                            <li name="id_kategori">
+                                @foreach(\App\Models\kategori::all() as $kategori)
+                                <a href="{{ asset('assets')}}/index.html">{{ $kategori->nama_kategori }}</a>
+                                @endforeach
+                            </li>
                         </ul>
-                    </li>
+                    </li> -->
                 </ul>
             </section>
             <!-- /.sidebar -->

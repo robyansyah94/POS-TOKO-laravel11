@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\kasirController;
 use App\Http\Controllers\kategoriController;
 use App\Http\Controllers\produkController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,7 @@ Route::get('produk/{id}/edit', [produkController::class, 'edit']);
 Route::patch('produk/{id}/edit', [produkController::class, 'update']);
 Route::delete('produk/{id}/delete', [produkController::class, 'destroy']);
 
+Route::get('/kasir', [kasirController::class, 'index']);
 
 Route::get('/', [kategoriController::class, 'index']);
 Route::get('kategori/add', [kategoriController::class, 'create']);

@@ -21,15 +21,24 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <a href="{{ url('/') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
+            <a href="{{ url('/produk') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
         </div>
         <div class="box-body">
-            <form action="{{ empty($result) ? url('produk/add') : url("produk/$result->id_produk/edit") }}" class="form-horizontal" method="POST">
+            <form action="{{ empty($result) ? url('produk/add') : url("produk/$result->id_produk/edit") }}" class="form-horizontal" method="POST" 
+            enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                 @if (!empty($result))
                 {{ method_field('patch') }}
                 @endif
+                
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Foto Produk</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="foto"/>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-2">Nama Produk</label>
                     <div class="col-sm-10">
@@ -55,13 +64,13 @@
                     <label class="control-label col-sm-2">Kategori</label>
                     <div class="col-sm-10">
                         <select name="id_kategori" class="form-control">
-                        @foreach(\App\Models\kategori::all() as $kategori)
+                            @foreach(\App\Models\kategori::all() as $kategori)
                             <option value="{{ $kategori->id_kategori }}" {{ @$result->id_kategori == $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>

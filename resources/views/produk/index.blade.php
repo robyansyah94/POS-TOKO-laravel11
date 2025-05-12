@@ -27,10 +27,11 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Foto</th>
                         <th>Nama Produk</th>
                         <th>Stock</th>
-                        <th>Harga</th>
                         <th>Kategori</th>
+                        <th>Harga</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -39,6 +40,9 @@
                     @foreach ($result as $row)
                     <tr>
                         <td>{{ !empty($i) ? ++$i : $i = 1 }}</td>
+                        <td>
+                            <img src="{{ asset('uploads/'.@$row->foto) }}" width="50px" class="img">
+                        </td>
                         <td>{{ $row->nama_produk }}</td>
                         <td>{{ $row->stok }}</td>
                         <td>{{ $row->kategori->nama_kategori }}</td>
