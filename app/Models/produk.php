@@ -8,7 +8,7 @@ class produk extends Model
 {
     protected $primaryKey = 'id_produk';
 
-    protected $table = 't_produk';
+    protected $table = 't_produk'; 
 
     protected $fillable = [
         'nama_produk', 'stok', 'harga', 'id_kategori', 'foto'
