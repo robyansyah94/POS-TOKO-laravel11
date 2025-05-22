@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\produk;
 
 class TransaksiController extends Controller
 {
@@ -43,14 +44,22 @@ class TransaksiController extends Controller
             ]);
 
             // Simpan detail order
-            foreach ($keranjang as $produkId => $item) {
+            foreach ($keranjang as $id_produk => $item) {
                 OrderDetail::create([
                     'order_id' => $order->order_id,  // pastikan relasi sudah benar di model
-                    'id_produk' => $produkId,        // sesuai kolom di tabel order_detail
+                    'id_produk' => $id_produk,        // sesuai kolom di tabel order_detail
                     'harga' => $item['harga'],
                     'jumlah' => $item['jumlah'],
                 ]);
+                
+                //stok berkurang jika membeli
+                $produk = \App\Models\produk::find($id_produk);
+                if ($produk) {
+                    $produk->stok = max(0, $produk->stok - $item['jumlah']);
+                    $produk->save();
+                }
             }
+
 
             DB::commit();
 

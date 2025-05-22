@@ -62,6 +62,7 @@
                                 </div>
                                 <div class="caption text-center">
                                     <h4>{{ $produk->nama_produk }}</h4>
+                                    <p>Stok : {{ $produk->stok }}</p>
                                     <p><strong>Rp {{ number_format($produk->harga, 0, ',', '.') }}</strong></p>
                                     <p>
                                     <form action="{{ url('keranjang/add') }}" method="POST">
