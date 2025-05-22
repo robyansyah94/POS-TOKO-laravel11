@@ -65,9 +65,7 @@
                                     <p>Stok : {{ $produk->stok }}</p>
                                     <p><strong>Rp {{ number_format($produk->harga, 0, ',', '.') }}</strong></p>
                                     <p>
-                                    <form action="{{ url('keranjang/add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id_produk" value="{{ $produk->id_produk }}">
+                                    <form class="form-tambah" data-id="{{ $produk->id_produk }}">
                                         <button type="submit" class="btn btn-primary btn-sm">Tambah</button>
                                     </form>
                                     </p>
@@ -80,7 +78,7 @@
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Panel Transaksi -->
+            <!-- Panel Transaksi (AJAX Loaded) -->
             <div class="col-md-4 col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -88,123 +86,148 @@
                     </div>
 
                     <div class="panel-body" id="panel-transaksi">
-                        @php
-                        $keranjang = session('keranjang', []);
-                        @endphp
-                        @foreach($keranjang as $id => $item)
-                        <div class="cart-item" style="margin-bottom: 15px;" data-harga="{{ $item['harga'] }}" data-jumlah="{{ $item['jumlah'] }}">
-                            <strong>{{ $item['nama_produk'] }}</strong><br>
-                            <small>Rp {{ number_format($item['harga'], 0, ',', '.') }} | Stok: {{ $item['stok'] }}</small>
-                            <div class="row" style="margin-top: 10px;">
-                                <div class="col-xs-8">
-                                    <div class="input-group input-group-sm">
-                                        <span class="input-group-btn">
-                                            <form action="{{ url('keranjang/kurang/'.$id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-default">-</button>
-                                            </form>
-                                        </span>
-                                        <input type="text" class="form-control text-center" value="{{ $item['jumlah'] }}" readonly>
-                                        <span class="input-group-btn">
-                                            <form action="{{ url('keranjang/tambah/'.$id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-default">+</button>
-                                            </form>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 text-right">
-                                    <strong>Rp {{ number_format($item['harga'] * $item['jumlah'], 0, ',', '.') }}</strong>
-                                </div>
-                            </div>
+                        <!-- Isi akan dimuat via AJAX -->
+                        <div class="text-center">
+                            <i class="fa fa-spinner fa-spin"></i> Memuat keranjang...
                         </div>
-                        @endforeach
-
-                        @if(count($keranjang))
-                        <form action="{{ url('keranjang/hapus-semua') }}" method="POST" onsubmit="return confirm('Yakin hapus semua keranjang?');">
-                            @csrf
-                            <button type="submit" class="btn btn-danger btn-block btn-sm">Hapus Semua</button>
-                            <hr>
-                        </form>
-                        @endif
-                        <p><strong>Sub Total:</strong> <span class="pull-right" id="subtotal">Rp 0</span></p>
-                        <p>Pajak (11%): <span class="pull-right" id="pajak">Rp 0</span></p>
-                        <hr>
-                        <h4><strong>Total:</strong> <span class="pull-right text-purple" id="total">Rp 0</span></h4>
-                        <hr>
                     </div>
-                    <form action="{{ route('keranjang.bayar') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="uang_diberikan">Uang Diberikan</label>
-                            <input type="text" id="uang_diberikan" name="uang_diberikan" class="form-control" placeholder="Masukkan jumlah uang" oninput="formatInputRupiah(this); hitungKembalian();">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="kembalian">Kembalian</label>
-                            <input type="text" id="kembalian" class="form-control" readonly>
-                        </div>
-
-                        <button class="btn btn-success btn-lg btn-block" type="submit">
-                            <strong>Bayar</strong>
-                        </button>
-                    </form>
                 </div>
             </div>
 
+            <!-- Script AJAX -->
             <script>
-                function formatRupiah(angka) {
-                    return 'Rp ' + angka.toLocaleString('id-ID');
-                }
+                document.addEventListener('DOMContentLoaded', function() {
+                    const panel = document.getElementById('panel-transaksi');
 
-                function hitungTotalDanPajak() {
-                    let subtotal = 0;
-                    const cartItems = document.querySelectorAll('.cart-item');
-
-                    cartItems.forEach(item => {
-                        const harga = parseInt(item.getAttribute('data-harga'));
-                        const jumlah = parseInt(item.getAttribute('data-jumlah'));
-                        subtotal += harga * jumlah;
-                    });
-
-                    const pajak = subtotal * 0.11;
-                    const total = subtotal + pajak;
-
-                    // Update ke DOM
-                    document.getElementById('subtotal').innerText = formatRupiah(subtotal);
-                    document.getElementById('pajak').innerText = formatRupiah(pajak);
-                    document.getElementById('total').innerText = formatRupiah(total);
-
-                    // Simpan total untuk hitung kembalian
-                    document.getElementById('total').dataset.totalValue = total;
-                }
-
-                function hitungKembalian() {
-                    const uangInput = document.getElementById('uang_diberikan').value;
-                    const uang = parseInt(uangInput.replace(/[^0-9]/g, '')); // Hapus semua selain angka
-                    const total = parseInt(document.getElementById('total').dataset.totalValue || 0);
-                    const kembalianInput = document.getElementById('kembalian');
-
-                    if (!isNaN(uang) && uang >= total) {
-                        const kembalian = uang - total;
-                        kembalianInput.value = formatRupiah(kembalian);
-                    } else {
-                        kembalianInput.value = 'Rp 0';
+                    function loadPanelTransaksi() {
+                        fetch('{{ url("keranjang/panel") }}') // GET adalah default
+                            .then(res => res.text())
+                            .then(html => {
+                                panel.innerHTML = html;
+                                hitungTotalDanPajak();
+                                bindPanelEvents();
+                            });
                     }
-                }
 
-                function formatInputRupiah(input) {
-                    let angka = input.value.replace(/[^0-9]/g, '');
-                    if (!angka) {
-                        input.value = '';
-                        return;
+                    function bindFormTambah() {
+                        document.querySelectorAll('.form-tambah').forEach(form => {
+                            form.addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                const id = this.dataset.id;
+
+                                fetch('{{ url("keranjang/add") }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        id_produk: id
+                                    })
+                                }).then(() => loadPanelTransaksi());
+                            });
+                        });
                     }
-                    angka = parseInt(angka).toLocaleString('id-ID');
-                    input.value = angka;
-                }
 
-                // Jalankan saat halaman selesai dimuat
-                document.addEventListener('DOMContentLoaded', hitungTotalDanPajak);
+                    function bindPanelEvents() {
+                        // Tombol tambah
+                        document.querySelectorAll('.btn-tambah').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = this.dataset.id;
+                                fetch('/keranjang/tambah/' + id, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                }).then(() => loadPanelTransaksi());
+                            });
+                        });
+
+                        // Tombol kurang
+                        document.querySelectorAll('.btn-kurang').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = this.dataset.id;
+                                fetch('/keranjang/kurang/' + id, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                }).then(() => loadPanelTransaksi());
+                            });
+                        });
+
+                        // Hapus semua
+                        const btnHapusSemua = document.getElementById('btn-hapus-semua');
+                        if (btnHapusSemua) {
+                            btnHapusSemua.addEventListener('click', function() {
+                                if (confirm('Yakin hapus semua keranjang?')) {
+                                    fetch('/keranjang/hapus-semua', {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    }).then(() => loadPanelTransaksi());
+                                }
+                            });
+                        }
+
+                        // Format dan hitung kembalian
+                        const uangDiberikan = document.getElementById('uang_diberikan');
+                        if (uangDiberikan) {
+                            uangDiberikan.addEventListener('input', function() {
+                                formatInputRupiah(this);
+                                hitungKembalian();
+                            });
+                        }
+
+                        hitungKembalian();
+                    }
+
+                    function formatRupiah(angka) {
+                        return 'Rp ' + angka.toLocaleString('id-ID');
+                    }
+
+                    function hitungTotalDanPajak() {
+                        let subtotal = 0;
+                        const cartItems = document.querySelectorAll('.cart-item');
+
+                        cartItems.forEach(item => {
+                            const harga = parseInt(item.dataset.harga);
+                            const jumlah = parseInt(item.dataset.jumlah);
+                            subtotal += harga * jumlah;
+                        });
+
+                        const pajak = subtotal * 0.11;
+                        const total = subtotal + pajak;
+
+                        document.getElementById('subtotal').innerText = formatRupiah(subtotal);
+                        document.getElementById('pajak').innerText = formatRupiah(pajak);
+                        const totalElement = document.getElementById('total');
+                        totalElement.innerText = formatRupiah(total);
+                        totalElement.dataset.totalValue = total;
+                    }
+
+                    function hitungKembalian() {
+                        const uangInput = document.getElementById('uang_diberikan');
+                        const totalValue = parseInt(document.getElementById('total')?.dataset.totalValue || 0);
+                        const kembalianInput = document.getElementById('kembalian');
+
+                        if (uangInput && kembalianInput) {
+                            const uang = parseInt(uangInput.value.replace(/[^0-9]/g, ''));
+                            const kembalian = !isNaN(uang) && uang >= totalValue ? uang - totalValue : 0;
+                            kembalianInput.value = formatRupiah(kembalian);
+                        }
+                    }
+
+                    function formatInputRupiah(input) {
+                        let angka = input.value.replace(/[^0-9]/g, '');
+                        input.value = angka ? parseInt(angka).toLocaleString('id-ID') : '';
+                    }
+
+                    // Inisialisasi
+                    bindFormTambah();
+                    loadPanelTransaksi();
+                });
             </script>
         </div>
     </div>

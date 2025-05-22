@@ -15,6 +15,7 @@ Route::delete('produk/{id}/delete', [produkController::class, 'destroy']);
 
 Route::get('/kasir', [kasirController::class, 'index']);
 Route::post('keranjang/add', [kasirController::class, 'store'])->name('keranjang');
+Route::get('/keranjang/panel', [kasirController::class, 'panelTransaksi']);
 Route::post('keranjang/tambah/{id}', [kasirController::class, 'tambah']);
 Route::post('keranjang/kurang/{id}', [kasirController::class, 'kurang']);
 Route::post('keranjang/hapus-semua', [kasirController::class, 'hapusSemua']);
