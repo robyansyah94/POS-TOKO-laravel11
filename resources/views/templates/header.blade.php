@@ -219,6 +219,7 @@
                     <li><a href="{{ asset('/')}}"><i class="fa fa-book"></i> <span>Data Kategori</span></a></li>
                     <li><a href="{{ asset('/produk')}}"><i class="fa fa-shopping-cart"></i> <span>Data Produk</span></a></li>
                     <li><a href="{{ asset('/kasir')}}"><i class="fa fa-shopping-cart"></i> <span>Produk</span></a></li>
+                    <li><a href="{{ asset('/transaksi')}}"><i class="fa fa-credit-card"></i> <span>Transaksi</span></a></li>
                     <!-- <li class="treeview">
                         <a href="#">
                             <i class="fa fa-th"></i> <span>Kategori</span>

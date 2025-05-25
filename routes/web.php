@@ -22,6 +22,8 @@ Route::post('keranjang/hapus-semua', [kasirController::class, 'hapusSemua']);
 
 Route::post('/keranjang/bayar', [TransaksiController::class, 'bayar'])->name('keranjang.bayar');
 
+Route::get('/transaksi', [TransaksiController::class, 'index']);
+
 Route::get('/', [kategoriController::class, 'index']);
 Route::get('kategori/add', [kategoriController::class, 'create']);
 Route::post('kategori/add', [kategoriController::class, 'store']);

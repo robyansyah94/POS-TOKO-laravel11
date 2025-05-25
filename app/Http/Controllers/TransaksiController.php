@@ -10,6 +10,15 @@ use App\Models\produk;
 
 class TransaksiController extends Controller
 {
+    //TAMPILAN
+    public function index()
+    {
+        $data['result'] = \App\Models\OrderDetail::all();
+        return view('Transaksi/index')->with($data);
+    }
+    
+
+    // Transaksi
     public function bayar(Request $request)
     {
         $keranjang = session('keranjang', []);
@@ -51,7 +60,7 @@ class TransaksiController extends Controller
                     'harga' => $item['harga'],
                     'jumlah' => $item['jumlah'],
                 ]);
-                
+
                 //stok berkurang jika membeli
                 $produk = \App\Models\produk::find($id_produk);
                 if ($produk) {

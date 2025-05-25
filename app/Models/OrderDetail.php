@@ -16,4 +16,10 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
+
+    // 🔧 Tambahkan relasi ke Produk
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
+    }
 }
