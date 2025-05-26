@@ -21,10 +21,11 @@ class produkController extends Controller
     {
         $request->validate([
             'nama_produk' => 'required|max:100',
-            'stok' => 'required|max:100',
-            'harga' => 'required|max:100',
+            'sku'         => 'required|string|unique:t_produk,sku',
+            'stok'        => 'required|max:100',
+            'harga'       => 'required|max:100',
             'id_kategori' => 'required|exists:t_kategori',
-            'foto' => 'required|mimes:jpeg,png|max:512',
+            'foto'        => 'required|mimes:jpeg,png|max:512',
         ]);
 
         $input = $request->all();

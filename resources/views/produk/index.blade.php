@@ -15,7 +15,7 @@
 
 <!-- Main content -->
 <section class="content">
-@include('templates/feedback')
+    @include('templates/feedback')
 
     <!-- Default box -->
     <div class="box">
@@ -28,6 +28,7 @@
                     <tr>
                         <th>No</th>
                         <th>Foto</th>
+                        <th>SKU</th>
                         <th>Nama Produk</th>
                         <th>Stock</th>
                         <th>Kategori</th>
@@ -43,10 +44,11 @@
                         <td>
                             <img src="{{ asset('uploads/'.@$row->foto) }}" width="50px" class="img">
                         </td>
+                        <td>{!! DNS1D::getBarcodeHTML($row->sku, 'C128') !!}</td>
                         <td>{{ $row->nama_produk }}</td>
                         <td>{{ $row->stok }}</td>
                         <td>{{ $row->kategori->nama_kategori }}</td>
-                        <td>{{ $row->harga }}</td>
+                        <td>{{ number_format($row->harga, 0, ',', '.') }}</td>
                         <td>
                             <a href="{{ url("produk/$row->id_produk/edit") }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></a>
                             <form action="{{ url("produk/$row->id_produk/delete") }}" method="POST" style="display:inline;">

@@ -24,18 +24,18 @@
             <a href="{{ url('/produk') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
         </div>
         <div class="box-body">
-            <form action="{{ empty($result) ? url('produk/add') : url("produk/$result->id_produk/edit") }}" class="form-horizontal" method="POST" 
-            enctype="multipart/form-data">
+            <form action="{{ empty($result) ? url('produk/add') : url("produk/$result->id_produk/edit") }}" class="form-horizontal" method="POST"
+                enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                 @if (!empty($result))
                 {{ method_field('patch') }}
                 @endif
-                
+
                 <div class="form-group">
                     <label class="control-label col-sm-2">Foto Produk</label>
                     <div class="col-sm-10">
-                        <input type="file" name="foto"/>
+                        <input type="file" name="foto" />
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Harga</label>
                     <div class="col-sm-10">
-                        <input type="text" name="harga" class="form-control" placeholder="Masukkan Harga" value="{{ @$result->harga }}" />
+                        <input type="text" name="harga" class="form-control" placeholder="Masukkan Harga" value="{{ @$result->harga }}"/>
                     </div>
                 </div>
 
@@ -68,6 +68,15 @@
                             <option value="{{ $kategori->id_kategori }}" {{ @$result->id_kategori == $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">SKU</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="sku" id="sku" value="{{ @$result->sku }}" required>
+                        <!-- Tempat untuk preview kamera scanner -->
+                        <div id="reader" style="width:300px; margin-top:10px;"></div>
                     </div>
                 </div>
 
@@ -85,4 +94,34 @@
 
 </section>
 <!-- /.content -->
+
+<!-- Tambahkan library html5-qrcode -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Scan result: ${decodedText}`);
+        // Isi input sku dengan hasil scan barcode
+        document.getElementById('sku').value = decodedText;
+        // Hentikan scanner setelah scan berhasil
+        html5QrcodeScanner.clear().catch(error => {
+            console.error('Failed to clear scanner. ', error);
+        });
+    }
+
+    function onScanFailure(error) {
+        // bisa abaikan error scan, atau tampilkan log jika mau
+        // console.warn(`Scan error: ${error}`);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", {
+            fps: 10,
+            qrbox: 250
+        }
+    );
+
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
+
 @endsection
