@@ -48,7 +48,7 @@
                         <td>{{ $row->nama_produk }}</td>
                         <td>{{ $row->stok }}</td>
                         <td>{{ $row->kategori->nama_kategori }}</td>
-                        <td>{{ number_format($row->harga, 0, ',', '.') }}</td>
+                        <td>{{ $row->harga }}</td>
                         <td>
                             <a href="{{ url("produk/$row->id_produk/edit") }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></a>
                             <form action="{{ url("produk/$row->id_produk/delete") }}" method="POST" style="display:inline;">

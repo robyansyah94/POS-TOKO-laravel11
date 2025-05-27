@@ -47,7 +47,7 @@ class TransaksiController extends Controller
 
         try {
             // Simpan ke tabel order
-            $order = Order::create([
+            $orders = Order::create([
                 'invoice' => $invoice,
                 'total' => $total,
             ]);
@@ -55,7 +55,7 @@ class TransaksiController extends Controller
             // Simpan detail order
             foreach ($keranjang as $id_produk => $item) {
                 OrderDetail::create([
-                    'order_id' => $order->order_id,  // pastikan relasi sudah benar di model
+                    'order_id' => $orders->order_id,  // pastikan relasi sudah benar di model
                     'id_produk' => $id_produk,        // sesuai kolom di tabel order_detail
                     'harga' => $item['harga'],
                     'jumlah' => $item['jumlah'],

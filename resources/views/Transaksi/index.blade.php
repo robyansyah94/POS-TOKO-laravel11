@@ -37,9 +37,9 @@
                     <tr>
                         <td class="text-center">{{ $row->order_id}}</td>
                         <td class="text-center">{{ $row->produk->nama_produk }}</td>
-                        <td class="text-center"><strong>Rp {{ number_format($row->harga, 0, ',', '.') }}</strong></td>
+                        <td class="text-center">Rp {{ number_format($row->harga, 0, ',', '.') }}</td>
                         <td class="text-center">{{ $row->jumlah }}</td>
-                        <td class="text-center">{{ $row->order->total }}</td>
+                        <td class="text-center"><strong>Rp {{ number_format($row->order->total, 0, ',', '.') }}</strong></td>
                         <td class="text-center">{{ $row->created_at->format('d M Y H:i') }}</td>
                     </tr>
                     @endforeach

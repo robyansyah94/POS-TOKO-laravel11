@@ -36,16 +36,23 @@ $keranjang = session('keranjang', []);
 <hr>
 <h4><strong>Total:</strong> <span class="pull-right text-purple" id="total">Rp 0</span></h4>
 <hr>
-<div class="form-group">
-    <label for="uang_diberikan">Uang Diberikan</label>
-    <input type="text" id="uang_diberikan" name="uang_diberikan" class="form-control" placeholder="Masukkan jumlah uang" oninput="formatInputRupiah(this); hitungKembalian();">
-</div>
 
-<div class="form-group">
-    <label for="kembalian">Kembalian</label>
-    <input type="text" id="kembalian" class="form-control" readonly>
-</div>
+<form action="{{ route('keranjang.bayar') }}" method="POST">
+    <div class="form-group">
+        <label for="uang_diberikan">Uang Diberikan</label>
+        <input type="text" id="uang_diberikan" name="uang_diberikan" class="form-control"
+            placeholder="Masukkan jumlah uang"
+            oninput="this.value = this.value.replace(/[^0-9]/g, ''); hitungKembalian();">
+    </div>
 
-<button class="btn btn-success btn-lg btn-block" type="submit">
-    <strong>Bayar</strong>
-</button>
+    <div class="form-group">
+        <label for="kembalian">Kembalian</label>
+        <input type="text" id="kembalian" class="form-control" readonly>
+    </div>
+
+    @csrf
+    <!-- elemen input dan keranjang -->
+    <button class="btn btn-success btn-lg btn-block" type="submit">
+        <strong>Bayar</strong>
+    </button>
+</form>

@@ -100,12 +100,12 @@
                     const panel = document.getElementById('panel-transaksi');
 
                     function loadPanelTransaksi() {
-                        fetch('{{ url("keranjang/panel") }}') // GET adalah default
+                        fetch('{{ url("keranjang/panel") }}')
                             .then(res => res.text())
                             .then(html => {
                                 panel.innerHTML = html;
-                                hitungTotalDanPajak();
-                                bindPanelEvents();
+                                hitungTotalDanPajak(); // <- ini set data-total-value
+                                bindPanelEvents(); // <- ini baru hitungKembalian
                             });
                     }
 
@@ -205,6 +205,9 @@
                         const totalElement = document.getElementById('total');
                         totalElement.innerText = formatRupiah(total);
                         totalElement.dataset.totalValue = total;
+
+                        // Panggil hitungKembalian() di sini karena totalValue sudah di-set
+                        hitungKembalian();
                     }
 
                     function hitungKembalian() {
@@ -214,8 +217,18 @@
 
                         if (uangInput && kembalianInput) {
                             const uang = parseInt(uangInput.value.replace(/[^0-9]/g, ''));
-                            const kembalian = !isNaN(uang) && uang >= totalValue ? uang - totalValue : 0;
-                            kembalianInput.value = formatRupiah(kembalian);
+
+                            if (isNaN(uang)) {
+                                kembalianInput.value = '';
+                                return;
+                            }
+
+                            if (uang < totalValue) {
+                                kembalianInput.value = 'Uang kurang';
+                            } else {
+                                const kembalian = uang - totalValue;
+                                kembalianInput.value = formatRupiah(kembalian);
+                            }
                         }
                     }
 
