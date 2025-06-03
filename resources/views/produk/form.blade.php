@@ -5,7 +5,7 @@
 <section class="content-header">
     <h1>
         {{ empty($result) ? 'Tambah' : 'Edit' }} Data produk
-        <small>SMK Negeri 1 Cianjur</small>
+        <small>MarketBy</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ ('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>

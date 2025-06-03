@@ -24,25 +24,36 @@
             <a href="{{ url('/') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
         </div>
         <div class="box-body">
-            <form action="{{ empty($result) ? url('kategori/add') : url("kategori/$result->id_kategori/edit") }}" class="form-horizontal" method="POST">
+            <form action="{{ empty($result) ? url('users/add') : url("users/$result->id_user/edit") }}" class="form-horizontal" method="POST">
                 {{ csrf_field() }}
 
                 @if (!empty($result))
                 {{ method_field('patch') }}
                 @endif
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Nama kategori</label>
+                    <label class="control-label col-sm-2">Username</label>
                     <div class="col-sm-10">
-                        <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan Nama kategori" value="{{ @$result->nama_kategori }}" />
+                        <input type="text" name="username" class="form-control" placeholder="Masukkan Username" value="{{ @$result->username }}" />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Deskripsi</label>
+                    <label class="control-label col-sm-2">Password</label>
                     <div class="col-sm-10">
-                        <input type="text" name="deskripsi" class="form-control" placeholder="Masukkan deskripsi" value="{{ @$result->deskripsi }}" />
+                        <input type="password" name="password" class="form-control" placeholder="Masukkan Password" value="{{ @$result->password }}" />
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="role" class="control-label col-sm-2">Role</label>
+                    <div class="col-sm-10">
+                        <select name="role" id="role" class="form-control">
+                            <option value="admin" {{ old('role', $user->role ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="kasir" {{ old('role', $user->role ?? '') == 'kasir' ? 'selected' : '' }}>Kasir</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>

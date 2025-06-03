@@ -139,7 +139,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <span class="hidden-xs">{{ Auth::user()->username }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -147,32 +147,18 @@
                                     <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        {{ Auth::user()->username }}
+                                        <small>{{ Auth::user()->role }}</small>
                                     </p>
                                 </li>
-                                <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
-                                    </div>
-                                    <!-- /.row -->
-                                </li>
+                                
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <div class="text-center">
+                                        <form action="{{ url('logout') }}" method="post">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-default btn-flat">logout</button>
+                                        </form>
                                     </div>
                                 </li>
                             </ul>
@@ -198,8 +184,8 @@
                         <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Alexander Pierce</p>
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        <p>{{ Auth::user()->username }}</p>
+                        <p>{{ Auth::user()->role }}</p>
                     </div>
                 </div>
                 <!-- search form -->
@@ -216,10 +202,16 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
+                    @if(Auth::user()->role === 'kasir')
+                    <li><a href="{{ asset('/kasir')}}"><i class="fa fa-shopping-cart"></i> <span>Produk</span></a></li>
+                    @endif
+
+                    @if(Auth::user()->role === 'admin')
                     <li><a href="{{ asset('/')}}"><i class="fa fa-book"></i> <span>Data Kategori</span></a></li>
                     <li><a href="{{ asset('/produk')}}"><i class="fa fa-shopping-cart"></i> <span>Data Produk</span></a></li>
-                    <li><a href="{{ asset('/kasir')}}"><i class="fa fa-shopping-cart"></i> <span>Produk</span></a></li>
                     <li><a href="{{ asset('/transaksi')}}"><i class="fa fa-credit-card"></i> <span>Transaksi</span></a></li>
+                    <li><a href="{{ asset('/users')}}"><i class="fa fa-credit-card"></i> <span>User</span></a></li>
+                    @endif
                     <!-- <li class="treeview">
                         <a href="#">
                             <i class="fa fa-th"></i> <span>Kategori</span>
