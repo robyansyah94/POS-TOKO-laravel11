@@ -76,7 +76,7 @@
                     <div class="col-sm-10">
                         <input type="text" name="sku" id="sku" value="{{ @$result->sku }}" required>
                         <!-- Tempat untuk preview kamera scanner -->
-                        <div id="reader" style="width:300px; margin-top:10px;"></div>
+                        <!-- <div id="reader" style="width:300px; margin-top:10px;"></div> -->
                     </div>
                 </div>
 

@@ -15,30 +15,35 @@ class kasirController extends Controller
 
     public function store(Request $request)
     {
-        $produk = produk::findOrFail($request->id_produk);
-        $keranjang = session()->get('keranjang', []);
+        // *Pastikan Anda benar‐benar ambil key 'id_produk'*
+        $id = $request->input('id_produk');
+        $product = Produk::find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Produk tidak ditemukan'], 404);
+        }
 
-        if (isset($keranjang[$produk->id_produk])) {
-            $keranjang[$produk->id_produk]['jumlah'] += 1;
+        // Ambil isi keranjang sekarang
+        $keranjang = session('keranjang', []);
+
+        if (isset($keranjang[$id])) {
+            $keranjang[$id]['jumlah']++;
         } else {
-            $keranjang[$produk->id_produk] = [
-                'nama_produk' => $produk->nama_produk,
-                'stok' => $produk->stok,
-                'harga' => $produk->harga,
-                'jumlah' => 1
+            $keranjang[$id] = [
+                'nama_produk' => $product->nama_produk,
+                'harga'       => $product->harga,
+                'stok'        => $product->stok,
+                'jumlah'      => 1,
             ];
         }
 
-        session(['keranjang' => $keranjang]);
+        session()->put('keranjang', $keranjang);
 
-        if ($request->ajax()) {
-            return response()->json(['status' => 'success']);
-        }
-
-        return redirect()->back();
+        // DEBUG (hapus setelah yakin benar)
+        // dd(session('keranjang'));
+        return response()->json(['success' => true]);
     }
 
-    
+
     public function panelTransaksi()
     {
         $keranjang = session('keranjang', []);
@@ -48,15 +53,34 @@ class kasirController extends Controller
 
     public function tambah($id)
     {
+        $produk = \App\Models\Produk::find($id);
+
+        if (!$produk) {
+            return response()->json(['status' => 'error', 'message' => 'Produk tidak ditemukan'], 404);
+        }
+
         $keranjang = session()->get('keranjang', []);
 
         if (isset($keranjang[$id])) {
             $keranjang[$id]['jumlah'] += 1;
+        } else {
+            $keranjang[$id] = [
+                'nama_produk' => $produk->nama_produk,
+                'harga' => $produk->harga,
+                'stok' => $produk->stok,
+                'jumlah' => 1
+            ];
         }
 
         session(['keranjang' => $keranjang]);
+
+        if (request()->ajax()) {
+            return response()->json(['status' => 'success']);
+        }
+
         return redirect()->back();
     }
+
 
     public function kurang($id)
     {
@@ -67,12 +91,53 @@ class kasirController extends Controller
         }
 
         session(['keranjang' => $keranjang]);
+
+        if (request()->ajax()) {
+            return response()->json(['status' => 'success']);
+        }
+
         return redirect()->back();
     }
 
     public function hapusSemua()
     {
         session()->forget('keranjang');
+
+        if (request()->ajax()) {
+            return response()->json(['status' => 'success']);
+        }
+
+        return redirect()->back();
+    }
+
+
+
+    public function scan(Request $request)
+    {
+        $sku = $request->input('sku');
+        $produk = Produk::where('sku', $sku)->first();
+
+        if (!$produk) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        }
+
+        $keranjang = session()->get('keranjang', []);
+
+        if (isset($keranjang[$produk->id])) {
+            if ($keranjang[$produk->id]['jumlah'] < $produk->stok) {
+                $keranjang[$produk->id]['jumlah'] += 1;
+            }
+        } else {
+            $keranjang[$produk->id] = [
+                'nama_produk' => $produk->nama_produk,  // ini juga perlu diganti jadi 'nama_produk' sesuai produk
+                'harga' => $produk->harga,
+                'jumlah' => 1,
+                'stok' => $produk->stok,
+            ];
+        }
+
+        session(['keranjang' => $keranjang]);
+
         return redirect()->back();
     }
 }

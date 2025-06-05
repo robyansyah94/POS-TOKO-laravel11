@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\produk;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
     //TAMPILAN
     public function index()
     {
-        $data['result'] = \App\Models\OrderDetail::all();
+        $data['result'] = \App\Models\Order::all();
         return view('Transaksi/index')->with($data);
     }
-    
+
 
     // Transaksi
     public function bayar(Request $request)
@@ -50,13 +51,18 @@ class TransaksiController extends Controller
             $orders = Order::create([
                 'invoice' => $invoice,
                 'total' => $total,
+                'id_user' => Auth::id(),
             ]);
 
             // Simpan detail order
             foreach ($keranjang as $id_produk => $item) {
+                if (empty($id_produk) || !is_numeric($id_produk)) {
+                    continue; // atau log error
+                }
+
                 OrderDetail::create([
-                    'order_id' => $orders->order_id,  // pastikan relasi sudah benar di model
-                    'id_produk' => $id_produk,        // sesuai kolom di tabel order_detail
+                    'order_id' => $orders->order_id,
+                    'id_produk' => (int)$id_produk,
                     'harga' => $item['harga'],
                     'jumlah' => $item['jumlah'],
                 ]);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DTransaksiController;
 use App\Http\Controllers\kasirController;
 use App\Http\Controllers\kategoriController;
 use App\Http\Controllers\produkController;
@@ -33,30 +34,32 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('kategori/{id}/edit', [kategoriController::class, 'update']);
     Route::delete('kategori/{id}/delete', [kategoriController::class, 'destroy']);
 
+    Route::get('/transaksi', [TransaksiController::class, 'index']);
+    Route::get('/transaksi/detail/{order_id}', [DTransaksiController::class, 'detail'])->name('transaksi.detail');
+
+    Route::get('/users', [UsersController::class, 'index']);
+    Route::get('users/add', [UsersController::class, 'create']);
+    Route::post('users/add', [UsersController::class, 'store']);
+    Route::get('users/{id}/edit', [UsersController::class, 'edit']);
+    Route::patch('users/{id}/edit', [UsersController::class, 'update']);
+    Route::delete('users/{id}/delete', [UsersController::class, 'destroy']);
 });
 
 
 Route::middleware(['auth', 'role:kasir'])->group(function () {
 
     Route::get('/kasir', [kasirController::class, 'index']);
+
+    Route::post('keranjang/add', [kasirController::class, 'store'])->name('keranjang');
+    Route::get('/keranjang/panel', [kasirController::class, 'panelTransaksi']);
+    Route::post('keranjang/tambah/{id}', [kasirController::class, 'tambah']);
+    Route::post('keranjang/kurang/{id}', [kasirController::class, 'kurang']);
+    Route::post('keranjang/hapus-semua', [kasirController::class, 'hapusSemua']);
+
+    Route::post('/keranjang/bayar', [TransaksiController::class, 'bayar'])->name('keranjang.bayar');
+
+
+    Route::post('/keranjang/scan', [KasirController::class, 'scan'])->name('keranjang.scan');
+    Route::post('/keranjang/store', [KasirController::class, 'store'])->name('keranjang.store');
+
 });
-
-Route::get('/users', [UsersController::class, 'index']);
-Route::get('users/add', [UsersController::class, 'create']);
-Route::post('users/add', [UsersController::class, 'store']);
-Route::get('users/{id}/edit', [UsersController::class, 'edit']);
-Route::patch('users/{id}/edit', [UsersController::class, 'update']);
-Route::delete('users/{id}/delete', [UsersController::class, 'destroy']);
-
-
-Route::post('keranjang/add', [kasirController::class, 'store'])->name('keranjang');
-Route::get('/keranjang/panel', [kasirController::class, 'panelTransaksi']);
-Route::post('keranjang/tambah/{id}', [kasirController::class, 'tambah']);
-Route::post('keranjang/kurang/{id}', [kasirController::class, 'kurang']);
-Route::post('keranjang/hapus-semua', [kasirController::class, 'hapusSemua']);
-
-Route::post('/keranjang/bayar', [TransaksiController::class, 'bayar'])->name('keranjang.bayar');
-
-Route::get('/transaksi', [TransaksiController::class, 'index']);
-
-Route::post('/scan-barcode', [TransaksiController::class, 'scanBarcode']);

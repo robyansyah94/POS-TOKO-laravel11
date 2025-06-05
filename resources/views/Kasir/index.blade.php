@@ -65,11 +65,16 @@
                                     <p>Stok : {{ $produk->stok }}</p>
                                     <p><strong>Rp {{ number_format($produk->harga, 0, ',', '.') }}</strong></p>
                                     <p>
+                                        @if ($produk->stok > 0)
                                     <form class="form-tambah" data-id="{{ $produk->id_produk }}">
                                         <button type="submit" class="btn btn-primary btn-sm">Tambah</button>
                                     </form>
+                                    @else
+                                    <button class="btn btn-secondary btn-sm" disabled>Habis</button>
+                                    @endif
                                     </p>
                                 </div>
+
                             </div>
                         </div>
                         @endforeach
@@ -119,7 +124,8 @@
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                        'Content-Type': 'application/json'
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json'
                                     },
                                     body: JSON.stringify({
                                         id_produk: id
@@ -137,7 +143,8 @@
                                 fetch('/keranjang/tambah/' + id, {
                                     method: 'POST',
                                     headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
                                     }
                                 }).then(() => loadPanelTransaksi());
                             });
@@ -150,7 +157,8 @@
                                 fetch('/keranjang/kurang/' + id, {
                                     method: 'POST',
                                     headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
                                     }
                                 }).then(() => loadPanelTransaksi());
                             });
@@ -164,7 +172,8 @@
                                     fetch('/keranjang/hapus-semua', {
                                         method: 'POST',
                                         headers: {
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
                                         }
                                     }).then(() => loadPanelTransaksi());
                                 }

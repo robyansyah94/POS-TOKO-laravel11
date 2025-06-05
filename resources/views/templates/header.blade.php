@@ -29,7 +29,7 @@
   <![endif]-->
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini {{ Auth::user()->role === 'kasir' ? 'sidebar-collapse' : '' }}">
     <!-- Site wrapper -->
     <div class="wrapper">
 
@@ -151,13 +151,13 @@
                                         <small>{{ Auth::user()->role }}</small>
                                     </p>
                                 </li>
-                                
+
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="text-center">
                                         <form action="{{ url('logout') }}" method="post">
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-default btn-flat">logout</button>
+                                            <button type="submit" class="btn btn-danger">logout</button>
                                         </form>
                                     </div>
                                 </li>
@@ -188,17 +188,6 @@
                         <p>{{ Auth::user()->role }}</p>
                     </div>
                 </div>
-                <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
@@ -210,7 +199,7 @@
                     <li><a href="{{ asset('/')}}"><i class="fa fa-book"></i> <span>Data Kategori</span></a></li>
                     <li><a href="{{ asset('/produk')}}"><i class="fa fa-shopping-cart"></i> <span>Data Produk</span></a></li>
                     <li><a href="{{ asset('/transaksi')}}"><i class="fa fa-credit-card"></i> <span>Transaksi</span></a></li>
-                    <li><a href="{{ asset('/users')}}"><i class="fa fa-credit-card"></i> <span>User</span></a></li>
+                    <li><a href="{{ asset('/users')}}"><i class="fa fa-users"></i> <span>User</span></a></li>
                     @endif
                     <!-- <li class="treeview">
                         <a href="#">

@@ -2,6 +2,14 @@
 $keranjang = session('keranjang', []);
 @endphp
 
+<form action="{{ route('keranjang.scan') }}" method="POST" id="form-scan">
+    @csrf
+    <div class="form-group">
+        <label for="sku">Scan / Masukkan SKU Produk</label>
+        <input type="text" id="sku" name="sku" class="form-control" placeholder="Scan Produk/input manual" autofocus>
+    </div>
+</form>
+
 @foreach($keranjang as $id => $item)
 <div class="cart-item" data-harga="{{ $item['harga'] }}" data-jumlah="{{ $item['jumlah'] }}">
     <strong>{{ $item['nama_produk'] }}</strong><br>
@@ -10,11 +18,11 @@ $keranjang = session('keranjang', []);
         <div class="col-xs-8">
             <div class="input-group input-group-sm">
                 <span class="input-group-btn">
-                    <button data-id="{{ $id }}" class="btn btn-default btn-kurang">-</button>
+                    <button type="button" data-id="{{ $id }}" class="btn btn-default btn-kurang">-</button>
                 </span>
                 <input type="text" class="form-control text-center" value="{{ $item['jumlah'] }}" readonly>
                 <span class="input-group-btn">
-                    <button data-id="{{ $id }}" class="btn btn-default btn-tambah">+</button>
+                    <button type="button" data-id="{{ $id }}" class="btn btn-default btn-tambah">+</button>
                 </span>
             </div>
         </div>
@@ -56,3 +64,12 @@ $keranjang = session('keranjang', []);
         <strong>Bayar</strong>
     </button>
 </form>
+
+<script>
+    document.getElementById('sku').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // agar tidak reload
+            document.getElementById('form-scan').submit();
+        }
+    });
+</script>
