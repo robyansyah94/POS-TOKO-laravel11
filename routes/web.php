@@ -35,7 +35,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('kategori/{id}/delete', [kategoriController::class, 'destroy']);
 
     Route::get('/transaksi', [TransaksiController::class, 'index']);
-    Route::get('/transaksi/detail/{order_id}', [DTransaksiController::class, 'detail'])->name('transaksi.detail');
+    Route::get('transaksi/detail', [DTransaksiController::class, 'index']);
 
     Route::get('/users', [UsersController::class, 'index']);
     Route::get('users/add', [UsersController::class, 'create']);
@@ -61,5 +61,4 @@ Route::middleware(['auth', 'role:kasir'])->group(function () {
 
     Route::post('/keranjang/scan', [KasirController::class, 'scan'])->name('keranjang.scan');
     Route::post('/keranjang/store', [KasirController::class, 'store'])->name('keranjang.store');
-
 });
