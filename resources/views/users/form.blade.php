@@ -21,7 +21,7 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <a href="{{ url('/') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
+            <a href="{{ url('/users') }}" class="btn bg-purple"><i class="fa fa-chevron-left"></i> Kembali</a>
         </div>
         <div class="box-body">
             <form action="{{ empty($result) ? url('users/add') : url("users/$result->id_user/edit") }}" class="form-horizontal" method="POST">

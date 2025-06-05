@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -8,11 +9,11 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        // Validasi input
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        // Ganti manual field yang dipakai attempt()
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
 
         $remember = $request->has('remember');
 
@@ -33,9 +34,12 @@ class AuthController extends Controller
             abort(403, 'Unauthorized role.');
         }
 
+
+
+        // Tambahkan flash log untuk debugging
         return back()->withErrors([
             'username' => 'These credentials do not match our records.',
-        ]);
+        ])->withInput();
     }
 
     public function logout(Request $request)

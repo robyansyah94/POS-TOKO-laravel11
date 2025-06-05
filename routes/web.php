@@ -19,30 +19,30 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/produk', [produkController::class, 'index']);
-    Route::get('produk/add', [produkController::class, 'create']);
-    Route::post('produk/add', [produkController::class, 'store']);
-    Route::get('produk/{id}/edit', [produkController::class, 'edit']);
-    Route::patch('produk/{id}/edit', [produkController::class, 'update']);
-    Route::delete('produk/{id}/delete', [produkController::class, 'destroy']);
+Route::get('/produk', [produkController::class, 'index']);
+Route::get('produk/add', [produkController::class, 'create']);
+Route::post('produk/add', [produkController::class, 'store']);
+Route::get('produk/{id}/edit', [produkController::class, 'edit']);
+Route::patch('produk/{id}/edit', [produkController::class, 'update']);
+Route::delete('produk/{id}/delete', [produkController::class, 'destroy']);
 
 
-    Route::get('/', [kategoriController::class, 'index']);
-    Route::get('kategori/add', [kategoriController::class, 'create']);
-    Route::post('kategori/add', [kategoriController::class, 'store']);
-    Route::get('kategori/{id}/edit', [kategoriController::class, 'edit']);
-    Route::patch('kategori/{id}/edit', [kategoriController::class, 'update']);
-    Route::delete('kategori/{id}/delete', [kategoriController::class, 'destroy']);
+Route::get('/', [kategoriController::class, 'index']);
+Route::get('kategori/add', [kategoriController::class, 'create']);
+Route::post('kategori/add', [kategoriController::class, 'store']);
+Route::get('kategori/{id}/edit', [kategoriController::class, 'edit']);
+Route::patch('kategori/{id}/edit', [kategoriController::class, 'update']);
+Route::delete('kategori/{id}/delete', [kategoriController::class, 'destroy']);
 
-    Route::get('/transaksi', [TransaksiController::class, 'index']);
-    Route::get('transaksi/detail', [DTransaksiController::class, 'index']);
+Route::get('/transaksi', [TransaksiController::class, 'index']);
+Route::get('transaksi/detail', [DTransaksiController::class, 'index']);
 
-    Route::get('/users', [UsersController::class, 'index']);
-    Route::get('users/add', [UsersController::class, 'create']);
-    Route::post('users/add', [UsersController::class, 'store']);
-    Route::get('users/{id}/edit', [UsersController::class, 'edit']);
-    Route::patch('users/{id}/edit', [UsersController::class, 'update']);
-    Route::delete('users/{id}/delete', [UsersController::class, 'destroy']);
+Route::get('/users', [UsersController::class, 'index']);
+Route::get('users/add', [UsersController::class, 'create']);
+Route::post('users/add', [UsersController::class, 'store']);
+Route::get('users/{id}/edit', [UsersController::class, 'edit']);
+Route::patch('users/{id}/edit', [UsersController::class, 'update']);
+Route::delete('users/{id}/delete', [UsersController::class, 'destroy']);
 });
 
 
